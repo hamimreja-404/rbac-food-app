@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Sub-schema for menu items array
 const menuItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  image: { type: String }, 
   price: { type: Number, required: true }
 });
 
@@ -26,6 +27,9 @@ const restaurantSchema = new mongoose.Schema({
   },
   deliveryTime: {
     type: String,   
+  },
+  image:{
+    type: String,
   },
   menu: [menuItemSchema] 
 });
