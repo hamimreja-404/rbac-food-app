@@ -11,11 +11,9 @@ export default function RestaurantPage() {
   const navigate = useNavigate();
   const { restaurant, loading, error } = useRestaurant(id);
   
-  // 1. Grab the cart array to calculate the item count manually
   const { cart } = useCart();
   const itemCount = (cart || []).reduce((sum, item) => sum + item.quantity, 0);
 
-  // Group menu items alphabetically by first letter as "categories"
   const categories = useMemo(() => {
     if (!restaurant?.menu?.length) return {};
     const CATS = {

@@ -7,14 +7,12 @@ export default function RestaurantCard({ restaurant }) {
   const { addToCart, removeFromCart, getItemQuantity } = useCart();
   const { user } = useAuth();
 
-  // Get the correct currency symbol based on the user's country
+  // currency symbol based on the user's country
   const currency = user?.country === "India" ? "₹" : "$";
 
-  // Grab the first item from the menu to use as the "Featured Dish"
   const topDish =
     restaurant.menu && restaurant.menu.length > 0 ? restaurant.menu[0] : null;
 
-  // Get current cart quantity for this specific dish
   const quantity = topDish ? getItemQuantity(topDish._id) : 0;
 
   return (
@@ -32,19 +30,18 @@ export default function RestaurantCard({ restaurant }) {
           alt={restaurant.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        {/* Swiggy-style dark gradient at bottom of image */}
+        
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent opacity-90"></div>
 
-        {/* Offer Text */}
         <div className="absolute bottom-2 left-3 font-extrabold text-white text-lg tracking-tight">
           50% OFF UPTO {currency}100
         </div>
       </div>
 
-      {/* 2. Restaurant Info */}
+      {/*  Restaurant Info */}
       <div
         className="p-4 flex-1"
-        onClick={() => navigate(`/restaurant/${restaurant._id}`)} // Clicking info goes to full menu
+        onClick={() => navigate(`/restaurant/${restaurant._id}`)} 
       >
         <div className="flex justify-between items-start mb-1">
           <h3 className="font-bold text-lg text-slate-900 line-clamp-1 group-hover:text-orange-500 transition-colors">
@@ -100,7 +97,6 @@ export default function RestaurantCard({ restaurant }) {
         </div>
       </div>
 
-      {/* 3. Featured Item & ADD TO CART (Directly on Homepage) */}
       {topDish && (
         <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
           <div className="flex-1 pr-2">
@@ -116,8 +112,6 @@ export default function RestaurantCard({ restaurant }) {
             </p>
           </div>
 
-          {/* Swiggy Style Add/Remove Button */}
-          {/* Swiggy Style Add/Remove Button */}
           <div className="shrink-0">
             {quantity === 0 ? (
               <button

@@ -10,7 +10,6 @@ router.get('/', verifyToken, getRestaurants);
 // GET /api/restaurants/:id
 router.get('/:id', verifyToken, getRestaurantById);
 
-// Only authenticated users can view restaurants (Controller handles country filtering)
 router.get('/', verifyToken, getRestaurants);
 
 module.exports = router;

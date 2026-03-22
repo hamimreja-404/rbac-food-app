@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   }, []);
 
-  // Auto-logout on token expiry
   useEffect(() => {
     if (!user) return;
     const msUntilExpiry = user.exp * 1000 - Date.now();
@@ -38,7 +37,6 @@ export const AuthProvider = ({ children }) => {
   const isManager  = () => hasRole('manager');
   const isMember   = () => hasRole('member');
 
-  // Permission helpers (mirrors backend RBAC)
   const canPlaceOrder   = () => hasRole('admin', 'manager');
   const canCancelOrder  = () => hasRole('admin', 'manager');
   const canUpdatePayment = () => hasRole('admin');

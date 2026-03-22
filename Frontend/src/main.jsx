@@ -8,7 +8,7 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
-      <CartProvider>   {/* ✅ THIS FIXES YOUR ERROR */}
+      <CartProvider>  
         <App />
       </CartProvider>
     </AuthProvider>

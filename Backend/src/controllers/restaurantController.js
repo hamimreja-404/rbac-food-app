@@ -4,8 +4,6 @@ const getRestaurants = async (req, res) => {
   try {
 
     const userCountry = req.user.country;
-
-    // Fetch restaurants strictly matching the user's assigned country
     const restaurants = await Restaurant.find({ country: userCountry });
 
     res.status(200).json({
@@ -20,7 +18,6 @@ const getRestaurants = async (req, res) => {
 };
 const getRestaurantById = async (req, res) => {
   try {
-    // Find the restaurant by ID, but strictly enforce the user's country!
     const restaurant = await Restaurant.findOne({
       _id: req.params.id,
       country: req.user.country 

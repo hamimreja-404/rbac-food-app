@@ -5,10 +5,8 @@ import RestaurantCard from "../components/RestaurantCard";
 import { RestaurantCardSkeleton } from "../components/Skeletons";
 import EmptyState from "../components/EmptyState";
 
-// Simplified Swiggy-style Filter Pills
 const FILTERS = ["Sort: High to Low", "Fast Delivery", "Ratings 4.0+"];
 
-// Updated categories to match typical food delivery cuisines/items
 const CATEGORIES = [
   {
     name: "Biryani",
@@ -40,17 +38,14 @@ export default function HomePage() {
   const { user } = useAuth();
   const { restaurants, loading, error } = useRestaurants();
 
-  // States for all our different UI controls
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
   const [activeFilter, setActiveFilter] = useState("");
 
-  // 🧠 The "Derived State" Pipeline
-  // useMemo ensures this heavy filtering only runs when the dependencies change
   const processedRestaurants = useMemo(() => {
     let processed = [...(restaurants || [])];
 
-    // 1. TEXT SEARCH (Checks name and cuisine)
+    // TEXT SEARCH 
     if (search) {
       const q = search.toLowerCase();
       processed = processed.filter(
@@ -60,7 +55,7 @@ export default function HomePage() {
       );
     }
 
-    // 2. CATEGORY CLICK ("What's on your mind?")
+    // CATEGORY CLICK 
     if (activeCategory) {
       const cat = activeCategory.toLowerCase();
       processed = processed.filter(
@@ -71,20 +66,18 @@ export default function HomePage() {
       );
     }
 
-    // 3. PILL FILTERS
     if (activeFilter === "Ratings 4.0+") {
       processed = processed.filter((r) => r.rating >= 4.0);
     }
 
     if (activeFilter === "Fast Delivery") {
-      // Assuming deliveryTime is a string like "15-25 min". We extract the first number.
       processed = processed.filter((r) => {
         const minTime = parseInt(r.deliveryTime);
-        return minTime && minTime <= 30; // Anything starting with 30 mins or less is "Fast"
+        return minTime && minTime <= 30;
       });
     }
 
-    // 4. SORTING
+    // SORTING
     if (activeFilter === "Sort: High to Low") {
       processed.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
@@ -92,14 +85,13 @@ export default function HomePage() {
     return processed;
   }, [restaurants, search, activeCategory, activeFilter]);
 
-  // Handler to toggle categories on and off
   const handleCategoryClick = (categoryName) => {
     setActiveCategory((prev) => (prev === categoryName ? "" : categoryName));
   };
 
   return (
     <main className="min-h-screen bg-white pb-20">
-      {/* 1. Header / Search Section */}
+      {/* Header */}
       <section className="bg-slate-50 pt-8 pb-6 px-4 mb-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -161,14 +153,12 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-6xl mx-auto px-4">
-        {/* 2. "What's on your mind?" (Category Carousel) */}
         {!search && (
           <section className="mb-10 animate-fade-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-extrabold text-2xl text-slate-900 tracking-tight">
                 What's on your mind?
               </h2>
-              {/* Show clear button if a category is active */}
               {activeCategory && (
                 <button
                   onClick={() => setActiveCategory("")}
@@ -215,7 +205,7 @@ export default function HomePage() {
 
         {!search && <hr className="border-t-2 border-slate-100 mb-10" />}
 
-        {/* 3. Main Restaurant Feed */}
+        {/* Main Restaurant Feed */}
         <section>
           <h2 className="font-extrabold text-2xl text-slate-900 tracking-tight mb-6">
             {search || activeCategory
@@ -223,7 +213,6 @@ export default function HomePage() {
               : `Restaurants with online food delivery in ${user?.country}`}
           </h2>
 
-          {/* Sticky Filters Row */}
           <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 py-3 -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-3 overflow-x-auto scrollbar-hide mb-6 border-b border-slate-100">
             {FILTERS.map((f) => {
               const isActive = activeFilter === f;
@@ -239,7 +228,6 @@ export default function HomePage() {
                   ].join(" ")}
                 >
                   {f}
-                  {/* Shows an X if active, or a sort icon if it's the sort button */}
                   {isActive ? (
                     <svg
                       className="w-4 h-4"
@@ -271,7 +259,6 @@ export default function HomePage() {
             })}
           </div>
 
-          {/* Error State */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 rounded-2xl p-4 text-sm font-medium flex items-center gap-2 mb-6">
               <svg
@@ -291,7 +278,6 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* The Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => (

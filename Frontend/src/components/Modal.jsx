@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 export default function Modal({ isOpen, onClose, title, children, footer }) {
-  // Close on Escape
+
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e) => e.key === 'Escape' && onClose();
@@ -10,7 +10,7 @@ export default function Modal({ isOpen, onClose, title, children, footer }) {
     return () => window.removeEventListener('keydown', handler);
   }, [isOpen, onClose]);
 
-  // Prevent body scroll
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };

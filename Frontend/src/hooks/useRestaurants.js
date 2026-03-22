@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { restaurantAPI } from '../services/api';
 
 export const useRestaurants = () => {
-  const [restaurants, setRestaurants] = useState([]); // Guaranteed to start as an array
+  const [restaurants, setRestaurants] = useState([]); 
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState(null);
 
@@ -12,8 +12,6 @@ export const useRestaurants = () => {
     try {
       const { data } = await restaurantAPI.getAll();
       
-      // THE FIX: Drill down to the actual array sent by our Express controller.
-      // The || [] ensures that even if the backend returns nothing, it won't crash the filter.
       setRestaurants(data.data || []); 
       
     } catch (err) {
@@ -40,8 +38,6 @@ export const useRestaurant = (id) => {
     try {
       const { data } = await restaurantAPI.getOne(id);
       
-      // THE FIX: Extract the nested restaurant object.
-      // Fallback to 'data' just in case you didn't wrap the single item response in your backend
       setRestaurant(data.data || data); 
       
     } catch (err) {

@@ -8,11 +8,9 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const { cart } = useCart();
   const navigate = useNavigate();
-  
-  // State to control the Cart Drawer visibility
+
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Calculate total items for the red notification badge
   const totalItems = (cart || []).reduce((sum, item) => sum + item.quantity, 0);
 
   const handleLogout = () => {
@@ -25,7 +23,7 @@ export default function Navbar() {
       <nav className="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
           
-          {/* Left: Logo */}
+          {/* Logo */}
           <div 
             className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform"
             onClick={() => navigate('/')}
@@ -90,7 +88,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Render the Drawer here so it overlays the whole screen when opened */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );

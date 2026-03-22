@@ -5,7 +5,6 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  // Helper to safely get the ID whether your DB uses _id or id
   const getItemId = (item) => item?._id || item?.id;
 
   const addToCart = (menuItem, restaurant) => {
@@ -20,7 +19,7 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { 
         ...menuItem, 
-        _id: targetId, // Force standardizing to _id in the cart
+        _id: targetId,
         quantity: 1, 
         restaurantId: getItemId(restaurant), 
         restaurantName: restaurant.name 

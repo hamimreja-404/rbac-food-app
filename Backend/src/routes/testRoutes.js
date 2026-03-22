@@ -5,25 +5,20 @@ const Restaurant = require('../models/Restaurant');
 
 const router = express.Router();
 
-// 1. Simple Server Ping
-// Test this at: http://localhost:5000/api/test/ping
 router.get('/ping', (req, res) => {
   res.status(200).json({ 
     success: true, 
-    message: '🟢 Server is running perfectly!' 
+    message: 'Server is running perfectly!' 
   });
 });
 
-// 2. Check Database Connection Status
-// Test this at: http://localhost:5000/api/test/db-status
 router.get('/db-status', (req, res) => {
   const status = mongoose.connection.readyState;
-  // Mongoose readyState: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
   const statusMap = {
-    0: 'Disconnected 🔴',
-    1: 'Connected 🟢',
-    2: 'Connecting 🟡',
-    3: 'Disconnecting 🟠'
+    0: 'Disconnected ',
+    1: 'Connected ',
+    2: 'Connecting ',
+    3: 'Disconnecting'
   };
 
   res.status(200).json({ 
@@ -33,7 +28,7 @@ router.get('/db-status', (req, res) => {
 });
 
 
-//  http://localhost:5000/api/test/users
+//  .../api/test/users
 router.get('/users', async (req, res) => {
   try {
     
@@ -49,7 +44,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-// http://localhost:5000/api/test/restaurants
+// ..../api/test/restaurants
 router.get('/restaurants', async (req, res) => {
   try {
     const restaurants = await Restaurant.find();

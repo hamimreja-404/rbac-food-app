@@ -9,7 +9,6 @@ import Modal from "../components/Modal";
 import Input from "../components/Input";
 import toast from "react-hot-toast";
 
-// Helper to format currency
 const formatCurrency = (amount, country) => {
   const symbol = country === "India" ? "₹" : "$";
   return `${symbol}${amount}`;
@@ -77,12 +76,10 @@ export default function OrdersPage() {
   const [paymentModal, setPaymentModal] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const [modalMode, setModalMode] = useState("update"); // 'update' or 'checkout'
+  const [modalMode, setModalMode] = useState("update");
 
-  // 🧠 MISSING STATE ADDED: Tracks WHICH order the modal is operating on
   const [activeOrderForPayment, setActiveOrderForPayment] = useState(null);
 
-  // UI RBAC LOGIC: If Member, default to 'pending' (Saved). Otherwise, 'all'.
   const isMember = user?.role === "member";
   const [activeStatus, setActiveStatus] = useState(isMember ? "saved" : "all");
 
@@ -92,13 +89,11 @@ export default function OrdersPage() {
       ? safeOrders
       : safeOrders.filter((o) => o.status === activeStatus);
 
-  // --- UNIFIED MODAL ACTION (Handles BOTH Checkout & Update) ---
   const handleModalSubmit = async () => {
     if (!paymentMethod.trim() || !activeOrderForPayment) return;
     setPaymentLoading(true);
     try {
       if (modalMode === "checkout") {
-        // 🚀 Check Out action (Manager & Admin)
         await orderAPI.checkout(activeOrderForPayment, { paymentMethod });
         toast.success("Order placed successfully with payment method!");
       } else {
@@ -124,7 +119,7 @@ export default function OrdersPage() {
     try {
       toast.loading("Cancelling order...", { id: "cancel" });
       await orderAPI.cancel(orderId);
-      toast.success("Order cancelled successfully! ❌", { id: "cancel" });
+      toast.success("Order cancelled successfully!!", { id: "cancel" });
       if (refetch) refetch();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to cancel order", {
@@ -141,7 +136,6 @@ export default function OrdersPage() {
           <h1 className="font-extrabold text-3xl text-slate-900 tracking-tight">
             My Orders
           </h1>
-          {/* 🛠️ ADDED: flex items-center gap-1.5 */}
           <p className="text-sm font-medium text-slate-500 mt-1 flex items-center gap-1.5">
             {orders?.length || 0} order{orders?.length !== 1 ? "s" : ""}
             <span className="mx-1 text-slate-300">•</span>
@@ -155,7 +149,7 @@ export default function OrdersPage() {
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-orange-500 shrink-0" // shrink-0 ensures the icon never gets squished
+              className="text-orange-500 shrink-0"
             >
               <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
               <circle cx="12" cy="10" r="3" />
@@ -165,7 +159,6 @@ export default function OrdersPage() {
         </div>
       </div>
 
-      {/* Swiggy-Style Status Filter Pills */}
       <div className="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
         {isMember ? (
           <button className="shrink-0 px-5 py-2 rounded-full text-sm font-bold border transition-all shadow-sm bg-orange-500 text-white border-orange-500 flex items-center gap-2">
@@ -183,7 +176,6 @@ export default function OrdersPage() {
                   : "bg-white text-slate-600 border-slate-200 hover:border-orange-300",
               ].join(" ")}
             >
-              {/* 🧠 Logic: If it's 'all', show text. If specific status, show SVG + Text */}
               {s === "all" ? (
                 "All Orders"
               ) : (
@@ -231,14 +223,12 @@ export default function OrdersPage() {
               canPlace={canPlaceOrder() && order.status === "saved"}
               canUpdate={canUpdatePayment()}
               onCancel={() => handleCancelOrder(order._id)}
-              // 🧠 1. CHECKOUT MODAL TRIGGER
               onCheckout={() => {
                 setActiveOrderForPayment(order._id);
                 setPaymentMethod("Corporate Card"); // Default choice
                 setModalMode("checkout");
                 setPaymentModal(true);
               }}
-              // 🧠 2. UPDATE MODAL TRIGGER
               onUpdatePayment={() => {
                 setActiveOrderForPayment(order._id);
                 setPaymentMethod(order.paymentMethod || "Corporate Card");
@@ -282,7 +272,6 @@ export default function OrdersPage() {
         }
       >
         <div className="space-y-5 p-2">
-          {/* Dynamic Description based on Role & Mode */}
           <div
             className={`p-3 rounded-xl border ${user?.role === "admin" ? "bg-blue-50 border-blue-100" : "bg-orange-50 border-orange-100"}`}
           >
@@ -341,7 +330,6 @@ export default function OrdersPage() {
             placeholder="e.g. Corporate Card"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            // 🧠 LOCK THE INPUT FOR MANAGERS
             disabled={user?.role !== "admin"}
             className={
               user?.role !== "admin"
@@ -382,7 +370,6 @@ export default function OrdersPage() {
               ].map((m) => (
                 <button
                   key={m}
-                  // 🧠 PREVENT CLICKING FOR MANAGERS
                   onClick={() => user?.role === "admin" && setPaymentMethod(m)}
                   className={[
                     "text-xs font-bold px-4 py-2 rounded-lg border transition-all",
@@ -500,9 +487,7 @@ function OrderCard({
           ))}
         </div>
 
-        {/* 🚀 DYNAMIC ACTION FOOTER */}
         <div className="border-t border-slate-100 pt-5 flex flex-col sm:flex-row gap-3">
-          {/* SCENARIO 1: PENDING ORDERS (Needs Checkout or Cancel) */}
           {order.status === "saved" && (
             <>
               {canCancel && (
@@ -545,7 +530,6 @@ function OrderCard({
             </>
           )}
 
-          {/* SCENARIO 2: PLACED ORDERS (Admin Update vs Locked) */}
           {order.status === "placed" && (
             <>
               {canUpdate ? (

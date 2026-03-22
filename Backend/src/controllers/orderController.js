@@ -1,6 +1,6 @@
 const Order = require('../models/Order');
 
-// All roles (admin, manager, member) can create an order (Add to Cart / Pending)
+// All roles 
 const createOrder = async (req, res) => {
   try {
     const { items, totalAmount } = req.body;
@@ -19,19 +19,17 @@ const createOrder = async (req, res) => {
   }
 };
 
-// Admin and Manager ONLY (Middleware handles the block, this just executes)
-// Admin and Manager ONLY (Middleware handles the block, this just executes)
 // Admin and Manager ONLY 
 const placeOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { paymentMethod } = req.body; // 🆕 Grab payment method from the request
+    const { paymentMethod } = req.body; 
 
     const order = await Order.findOneAndUpdate(
       { _id: orderId, country: req.user.country }, 
       { 
         status: 'placed',
-        paymentMethod: paymentMethod || 'Corporate Card' // 🆕 Save it to the database!
+        paymentMethod: paymentMethod || 'Corporate Card' 
       },
       { new: true }
     );
@@ -49,17 +47,12 @@ const placeOrder = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
   try {
-    // 🛠️ FIX: Always restrict orders to the user's country for safety
     let filter = { country: req.user.country }; 
     
-    // RBAC: Members only see their own orders. 
-    // Admins and Managers see ALL orders in their country.
     if (req.user.role === 'member') {
-      // 🛠️ FIX: Changed filter.user to filter.userId to match your createOrder function!
       filter.userId = req.user.id; 
     }
 
-    // 🛠️ FIX: Removed .populate('user') because it was crashing Mongoose!
     const orders = await Order.find(filter).sort({ createdAt: -1 });
     
     res.status(200).json({ success: true, data: orders });

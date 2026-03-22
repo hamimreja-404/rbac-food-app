@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { orderAPI } from '../services/api'; // Adjust path if needed
+import { orderAPI } from '../services/api'; 
 
 export const useOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -11,7 +11,6 @@ export const useOrders = () => {
       setLoading(true);
       const { data } = await orderAPI.getMyOrders();
       
-      // The Magic Fix: Safely unwrap the data whether it's nested or direct!
       const ordersArray = Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : []);
       
       setOrders(ordersArray);
@@ -23,7 +22,6 @@ export const useOrders = () => {
     }
   }, []);
 
-  // Fetch orders automatically on mount
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
@@ -32,6 +30,6 @@ export const useOrders = () => {
     orders, 
     loading, 
     error, 
-    refetch: fetchOrders // This allows us to reload data after a payment update!
+    refetch: fetchOrders 
   };
 };

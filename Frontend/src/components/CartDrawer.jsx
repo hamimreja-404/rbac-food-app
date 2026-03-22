@@ -23,7 +23,6 @@ export default function CartDrawer({ isOpen, onClose }) {
 
   const canCheckout = user?.role === "admin" || user?.role === "manager";
 
-  // 🧠 NEW: Specific check just for Admin powers
   const isAdmin = user?.role === "admin";
 
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  // 🚀 THE MAGIC FUNCTION
+
   const submitOrder = async (autoCheckout = false) => {
     try {
       setIsSubmitting(true);
@@ -130,7 +129,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 onClick={onClose}
                 className="mt-8 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-xl transition-colors cursor-pointer"
               >
-                SEE RESTAURANTS
+                No Items in Cart
               </button>
             </div>
           ) : (
@@ -265,7 +264,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <select
                     value={paymentMethod}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    disabled={!isAdmin} // Disables the dropdown for Managers
+                    disabled={!isAdmin}
                     className={`w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm font-bold rounded-xl px-4 py-2.5 outline-none transition-colors ${isAdmin ? "focus:border-green-500 cursor-pointer" : "opacity-60 cursor-not-allowed"}`}
                   >
                     <option value="Corporate Card">Corporate Card</option>

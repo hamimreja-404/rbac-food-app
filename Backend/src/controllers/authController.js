@@ -2,7 +2,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// Helper to create the JWT token so we don't repeat code
 const generateToken = (user) => {
   return jwt.sign(
     { 
@@ -20,13 +19,11 @@ const register = async (req, res) => {
   try {
     const { name, email, password, role, country } = req.body;
 
-    // Check if the user is already in our system
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ success: false, message: 'This email is already registered.' });
     }
 
-    // Secure the password before saving
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 

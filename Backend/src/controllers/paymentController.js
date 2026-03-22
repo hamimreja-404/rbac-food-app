@@ -2,9 +2,6 @@
 const updatePaymentMethod = async (req, res) => {
   try {
     const { orderId, paymentMethod } = req.body;
-    
-    // In a real app, this would interact with a Payment model or Stripe API
-    // For this RBAC demo, we acknowledge the admin's action.
 
     res.status(200).json({ 
       success: true, 

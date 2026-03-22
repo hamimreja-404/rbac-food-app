@@ -10,7 +10,6 @@ export default function MenuItemCard({ item, restaurantId, restaurantName, count
   const imgSrc = item.image || foodPlaceholder(item.name);
   const restaurantObj = { _id: restaurantId, name: restaurantName };
 
-  // Mocking a veg/non-veg flag (you can replace this with item.isVeg from your DB later)
   const isVeg = !item.name.toLowerCase().includes('chicken') && !item.name.toLowerCase().includes('meat');
 
   return (
@@ -32,7 +31,7 @@ export default function MenuItemCard({ item, restaurantId, restaurantName, count
           {formatCurrency(item.price, country || user?.country)}
         </p>
 
-        {/* Rating/Tagline (Mock feature to make it look premium) */}
+        {/* Rating */}
         <div className="items-center gap-1 text-xs font-bold text-orange-500 mb-3 bg-orange-50 inline-block px-2 py-0.5 rounded-md">
           ★ Bestseller
         </div>
@@ -57,7 +56,6 @@ export default function MenuItemCard({ item, restaurantId, restaurantName, count
           />
         </div>
 
-        {/* The Overlapping Swiggy-Style Button */}
         <div className="absolute -bottom-4 z-10 drop-shadow-md">
           {qty === 0 ? (
             <button

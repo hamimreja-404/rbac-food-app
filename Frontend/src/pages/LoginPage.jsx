@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import api, { authAPI } from "../services/api"; // Make sure default 'api' is imported
+import api, { authAPI } from "../services/api";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import toast from "react-hot-toast";
@@ -15,7 +15,7 @@ export default function LoginPage() {
   
   const [tab, setTab] = useState("login");
   const [loading, setLoading] = useState(false);
-  const [demoUsers, setDemoUsers] = useState([]); // State for fetched users
+  const [demoUsers, setDemoUsers] = useState([]); 
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
@@ -26,7 +26,6 @@ export default function LoginPage() {
     country: "India",
   });
 
-  // Fetch users from the backend when the page loads
   useEffect(() => {
     const fetchDemoUsers = async () => {
       try {
@@ -48,8 +47,8 @@ export default function LoginPage() {
     try {
       const { data } = await authAPI.login(loginForm);
       login(data.token);
-      toast.success(`Welcome back! 🍴`, { id: "auth" });
-      navigate('/home'); // Send to home page on success
+      toast.success(`Welcome back!!!`, { id: "auth" });
+      navigate('/home'); 
     } catch (err) {
       toast.error(err.response?.data?.message || err.message || "Login failed", { id: "auth" });
     } finally {
@@ -63,8 +62,8 @@ export default function LoginPage() {
     try {
       const { data } = await authAPI.register(registerForm);
       login(data.token);
-      toast.success("Account created! 🎉");
-      navigate('/home'); // Send to home page on success
+      toast.success("Account created!!!");
+      navigate('/home'); 
     } catch (err) {
       toast.error(
         err.response?.data?.message || err.message || "Registration failed",
@@ -82,10 +81,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex bg-[#f5f6f8] font-sans">
-      {/* LEFT PANEL — Authentication Form (Swiggy Style) */}
+
+      {/* LEFT PANEL — Authentication Form */}
       <div className="w-full lg:w-125 bg-white shadow-2xl flex flex-col justify-center p-10 z-10 relative">
         <div className="max-w-sm w-full mx-auto">
-          {/* Logo & Branding */}
           <div className="flex items-center gap-3 mb-10">
             <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
               <span className="text-white text-xl">🍴</span>
@@ -247,7 +246,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* RIGHT PANEL — Demo Accounts Showcase */}
+      {/* RIGHT PANEL - Demo Accounts Showcase */}
       <div className="hidden lg:flex flex-1 flex-col bg-orange-50/50 relative overflow-hidden p-12">
         <div className="absolute top-0 right-0 w-125 h-125 bg-orange-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         <div className="absolute bottom-0 left-0 w-100 h-100 bg-yellow-100/50 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
@@ -263,7 +262,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Dynamic User Cards Grid */}
           <div className="grid grid-cols-2 gap-4 overflow-y-auto pb-10 pr-4 custom-scrollbar">
             {demoUsers.length === 0 ? (
               <p className="text-gray-500">Loading demo users from database...</p>
